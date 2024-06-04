@@ -1,5 +1,6 @@
 const { Client, GatewayIntentBits } = require('discord.js');
-const axios = require('axios');
+const http = require('http');
+
 require('dotenv').config();
 
 const client = new Client({
@@ -11,6 +12,23 @@ const client = new Client({
 
 const TOKEN = process.env.TOKEN;
 const WEBHOOK_URL = process.env.WEBHOOK_URL;
+
+// Sunucuyu başlat
+const server = http.createServer((req, res) => {
+  res.writeHead(200, { 'Content-Type': 'text/plain' });
+  res.end('Keep alive check successful!');
+});
+
+const PORT = process.env.PORT || 3000;
+
+server.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
+
+// Periyodik olarak keep-alive isteği gönder
+setInterval(() => {
+  http.get(`http://localhost:${PORT}`);
+}, 60000); // 1 dakikada bir kontrol etmek için
 
 client.once('ready', () => {
   console.log(`Logged in as ${client.user.tag}!`);
