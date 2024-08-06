@@ -1,66 +1,46 @@
 const { Client, GatewayIntentBits } = require('discord.js');
-const http = require('http');
-
 require('dotenv').config();
 
 const client = new Client({
-  intents: [
-    GatewayIntentBits.Guilds,
-    GatewayIntentBits.GuildMembers
-  ]
+    intents: [
+        GatewayIntentBits.Guilds,
+        GatewayIntentBits.GuildMembers,
+        GatewayIntentBits.GuildMessages,
+    ]
 });
-
-const TOKEN = process.env.TOKEN;
-const WEBHOOK_URL = process.env.WEBHOOK_URL;
-
-// Sunucuyu başlat
-const server = http.createServer((req, res) => {
-  res.writeHead(200, { 'Content-Type': 'text/plain' });
-  res.end('Keep alive check successful!');
-});
-
-const PORT = process.env.PORT || 3000;
-
-server.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
-
-// Periyodik olarak keep-alive isteği gönder
-setInterval(() => {
-  http.get(`http://localhost:${PORT}`);
-}, 60000); // 1 dakikada bir kontrol etmek için
 
 client.once('ready', () => {
-  console.log(`Logged in as ${client.user.tag}!`);
+    console.log('Bot is online!');
 });
 
-client.on('guildMemberAdd', async member => {
-  const webhookMessage = {
-    content: `<@&1227001001567981578> ${member}`,
-    embeds: [
-      {
-        description: "╭ »TØKŬMÊİ\n╎    ・💎  ↦ #・﹒kurallar Okumayı unutma!\n╎ ・ 🌊↦ ⁠#二・🍂﹒kendini・tanıt Kendini tanıtabilirsin..\n╎ ・👑 ↦ #四・﹒renk・al Renklerini Seç?\n╰ » Hadi İyi Sohbetler",
-        color: null,
-        author: {
-          name: "Hoşgeldin !"
-        },
-        footer: {
-          text: `Seninle birlikte ${member.guild.memberCount} kişi olduk!`
-        },
-        image: {
-          url: "https://media.discordapp.net/attachments/1203665979096174632/1204130220588662874/Baslksz13_20240205212323.png?ex=665b6728&is=665a15a8&hm=9097845214dd0941949389c7532090346896036278cdf28dbbd92bcfb8c1b694&format=webp&quality=lossless&"
-        }
-      }
-    ],
-    attachments: []
-  };
+client.on('guildMemberAdd', member => {
+    const channel = member.guild.channels.cache.get('1177975094581149791'); // Karşılama mesajı göndermek istediğiniz kanalın ID'si
+    if (!channel) return;
 
-  try {
-    await axios.post(WEBHOOK_URL, webhookMessage);
-    console.log('Webhook başarıyla gönderildi!');
-  } catch (error) {
-    console.error('Webhook gönderilirken hata oluştu:', error);
-  }
+    const welcomeMessage = {
+        content: `Aramıza Hoşgeldin <:3712zerotwoheartlove:1241389409585074206> ${member}  <@&1270293476398993418>`,
+        embeds: [
+            {
+                title: "Hoşgeldin",
+                description: `╭ »TENGOKU\n╎ ・<a:1794_sparkles:1241374294890643487>  ↦ ⁠・﹒ <#1177975089283731556> - kurallar Okumayı unutma!\n╎ ・ <a:4165_Hyped_ZeroTwo:1241374320912240701> ↦ ⁠⁠二・🍂﹒ <#1178051348537823355> - Kendini tanıtabilirsin..\n╎ ・<a:9770animepat:1251507026694246401>  ↦ ⁠ ⁠ <#1178266906256482385> - Renklerini Seç ve rollerini al!Hoşgeldin !\n╎ ・<a:lavendalove:1241483165403709581>  ↦ ⁠・﹒ <@&1241109140001001653>  - Partnerlik için geldiysen etiketleyebilirsin..\n╰ » Hadi Sana İyi Sohbetler`,
+                color: null,
+                author: {
+                    name: `${member.user.username} Sunucuya İniş Yaptı`
+                },
+                image: {
+                    url: "https://cdn.discordapp.com/attachments/1245412053506592870/1270294681334583361/15e7bdc6ebb30d2dd028ed52dfc5bbbb.gif?ex=66b32d9c&is=66b1dc1c&hm=d42b9a07f532cd8eb12aae3bd968cc9943b9d20d51d78ab58473bf22a49cc832&"
+                },
+                thumbnail: {
+                    url: "https://cdn.discordapp.com/attachments/1245412053506592870/1270294681334583361/15e7bdc6ebb30d2dd028ed52dfc5bbbb.gif?ex=66b32d9c&is=66b1dc1c&hm=d42b9a07f532cd8eb12aae3bd968cc9943b9d20d51d78ab58473bf22a49cc832&"
+                }
+            }
+        ],
+        username: "Rias",
+        avatar_url: "https://cdn.discordapp.com/attachments/1123948349326893076/1270294012200489032/rias-gremory-dxd-rias.gif?ex=66b32cfd&is=66b1db7d&hm=7ef57b68af3f06eaba053875edf28b1488bb85499298f2345fe8f573e36885b7&",
+        attachments: []
+    };
+
+    channel.send(welcomeMessage);
 });
 
-client.login(TOKEN);
+client.login(process.env.DISCORD_TOKEN);
