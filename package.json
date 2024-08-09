@@ -9,8 +9,8 @@
   "dependencies": {
     "dotenv": "^16.0.0",
     "discord.js": "^14.0.0",
-    "express": "^4.18.0"  // Express bağımlılığını ekledik
-}
+    "express": "^4.18.0"
+  },
   "engines": {
     "node": ">=16.0.0"
   },
