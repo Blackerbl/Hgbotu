@@ -1,5 +1,9 @@
 require('dotenv').config();
 const { Client, GatewayIntentBits } = require('discord.js');
+const express = require('express');
+
+const app = express();
+const PORT = process.env.PORT || 3000; // PORT'u .env dosyasından veya varsayılan olarak 3000 olarak ayarla
 
 const client = new Client({
     intents: [
@@ -13,6 +17,12 @@ client.once('ready', () => {
     console.log('Bot is online!');
 });
 
+// Sunucuya bir istek geldiğinde yanıt ver
+app.get('/', (req, res) => {
+    res.send('Bot çalışıyor!');
+});
+
+// Botu başlat
 client.on('guildMemberAdd', member => {
     const channel = member.guild.channels.cache.get('1177975094581149791'); // Karşılama mesajı göndermek istediğiniz kanalın ID'si
     if (!channel) return;
@@ -43,4 +53,10 @@ client.on('guildMemberAdd', member => {
     channel.send(welcomeMessage);
 });
 
+// Botu başlat
 client.login(process.env.DISCORD_TOKEN);
+
+// Express sunucusunu başlat
+app.listen(PORT, () => {
+    console.log(`Express sunucusu ${PORT} portunda çalışıyor.`);
+});
