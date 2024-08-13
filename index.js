@@ -24,7 +24,7 @@ app.get('/', (req, res) => {
 
 // Botu başlat
 client.on('guildMemberAdd', member => {
-    const channel = member.guild.channels.cache.get('1177975094581149791'); // Karşılama mesajı göndermek istediğiniz kanalın ID'si
+    const channel = member.guild.channels.cache.get('1272806997342945284'); // Karşılama mesajı göndermek istediğiniz kanalın ID'si
     if (!channel) return;
 
     const welcomeMessage = {
