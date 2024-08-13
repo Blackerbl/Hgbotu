@@ -32,7 +32,7 @@ client.on('guildMemberAdd', member => {
         embeds: [
             {
                 title: "Hoşgeldin",
-                description: `╭ »TENGOKU\n╎ ・<a:1794_sparkles:1241374294890643487>  ↦ ⁠・﹒ <#1177975089283731556> - kurallar Okumayı unutma!\n╎ ・ <a:4165_Hyped_ZeroTwo:1241374320912240701> ↦ ⁠⁠二・🍂﹒ <#1178051348537823355> - Kendini tanıtabilirsin..\n╎ ・<a:9770animepat:1251507026694246401>  ↦ ⁠ ⁠ <#1178266906256482385> - Renklerini Seç ve rollerini al!Hoşgeldin !\n╎ ・<a:lavendalove:1241483165403709581>  ↦ ⁠・﹒ <@&1241109140001001653>  - Partnerlik için geldiysen etiketleyebilirsin..\n╰ » Hadi Sana İyi Sohbetler`,
+                description: `╭ »Keke 仌 Anime & Manga \n╎ ・<a:KOH:1272839412790591509>  ↦ ⁠・﹒ <#1272806996923650067> - kurallar Okumayı unutma!\n╎ ・ <a:kannaaglamak:1272813149246062643> ↦ ⁠⁠二・🍂﹒ <#1272806997342945289> - Kendini tanıtabilirsin..\n╎ ・<:wakuwaku:1242796320742445056>  ↦ ⁠ ⁠ <#1272806997342945284> - Selam Yaz\n╎ ・<:waw:1272837424703209605>  ↦ ⁠・﹒ <@&1272806996797689880>  - Partnerlik için geldiysen etiketleyebilirsin..\n╰ » Hadi Sana İyi Sohbetler`,
                 color: null,
                 author: {
                     name: `${member.user.username} Sunucuya İniş Yaptı`
