@@ -28,7 +28,7 @@ client.on('guildMemberAdd', member => {
     if (!channel) return;
 
     const welcomeMessage = {
-        content: `Aramıza Hoşgeldin <:3712zerotwoheartlove:1241389409585074206> ${member}  <@&1272845704858959935>`,
+        content: `Aramıza Hoşgeldin <:yes:1272441451543789641> ${member}  <@&1272845704858959935>`,
         embeds: [
             {
                 title: "Hoşgeldin",
