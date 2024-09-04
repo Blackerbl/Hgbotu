@@ -11,6 +11,9 @@ const client = new Client({
   ]
 });
 
+// Sadece bu sunucuda çalışmasını istediğiniz sunucu ID'si
+const ALLOWED_GUILD_ID = '1213531797925920768'; // Bu satırı kendi sunucu ID'nizle güncelleyin
+
 // Express uygulaması oluştur
 const app = express();
 
@@ -32,14 +35,19 @@ client.once('ready', async () => {
   console.log(`Bot başarıyla giriş yaptı: ${client.user.tag}`);
 
   // Her sunucudaki davetleri önceden kaydediyoruz
-  client.guilds.cache.forEach(async guild => {
+  const guild = client.guilds.cache.get(ALLOWED_GUILD_ID);
+  if (guild) {
     const firstInvites = await guild.invites.fetch();
     invites.set(guild.id, new Map(firstInvites.map(invite => [invite.code, invite.uses])));
-  });
+  } else {
+    console.error('Bot belirtilen sunucuda bulunamadı!');
+  }
 });
 
 // Yeni bir üye sunucuya katıldığında
 client.on('guildMemberAdd', async member => {
+  if (member.guild.id !== ALLOWED_GUILD_ID) return; // Diğer sunuculardan gelen istekleri yok say
+
   const cachedInvites = invites.get(member.guild.id);
   const newInvites = await member.guild.invites.fetch();
 
@@ -82,4 +90,4 @@ client.on('guildMemberAdd', async member => {
   }
 });
 
-client.login(process.env.TOKEN);
+client.login(process.env.DISCORD_TOKEN);
