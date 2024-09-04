@@ -14,6 +14,9 @@ const client = new Client({
 // Sadece bu sunucuda çalışmasını istediğiniz sunucu ID'si
 const ALLOWED_GUILD_ID = '1213531797925920768'; // Bu satırı kendi sunucu ID'nizle güncelleyin
 
+// Selam mesajını göndermek istediğiniz kanalın ID'si
+const WELCOME_CHANNEL_ID = '1280180147814793276'; // Bu satırı kendi kanal ID'nizle güncelleyin
+
 // Express uygulaması oluştur
 const app = express();
 
@@ -58,7 +61,7 @@ client.on('guildMemberAdd', async member => {
   const inviter = usedInvite ? usedInvite.inviter : null;
   const inviteLink = usedInvite ? `https://discord.gg/${usedInvite.code}` : 'Bilinmiyor';
 
-  const channel = member.guild.systemChannel; // Sistem kanalını al
+  const channel = member.guild.channels.cache.get(WELCOME_CHANNEL_ID); // Selam mesajını göndermek için belirtilen kanalı al
   if (channel) {
     // Embed mesajını oluştur
     const embed = new EmbedBuilder()
@@ -67,7 +70,7 @@ client.on('guildMemberAdd', async member => {
         `╭ »Bushi 仌 Anime & Manga & Destek\n` +
         `╎ ・<:anime_blanket:1278827611921055826>  ↦ ⁠・﹒ [Kurallar](https://discord.com/channels/1213531797925920768/1280180106832121906) - kuralları okumayı unutma!\n` +
         `╎ ・ <:focacomfy:1272421146544963646> ↦ ⁠⁠二・🍂﹒ [Selam Chat](https://discord.com/channels/1213531797925920768/1280180147814793276)\n` +
-        `╎ ・<:sei_iciyorum:1272428797395996744>  ↦ ⁠ ⁠ <#1272806997342945284> - Selam Yaz\n` +
+        `╎ ・<:sei_iciyorum:1272428797395996744>  ↦ ⁠ ⁠ https://discord.com/channels/1213531797925920768/1280180141414416526 - Destek İçin \n` +
         `╎ ・<:emoji_102:1273396150514221076>  ↦ ⁠・﹒ <@&1280179928058429481> - Partnerlik için geldiysen etiketleyebilirsin..\n` +
         `╰ » Hadi Sana İyi Sohbetler`
       )
@@ -82,7 +85,7 @@ client.on('guildMemberAdd', async member => {
       .setFooter({ text: `Sunucu ${member.guild.memberCount} Kişi` })
       .setImage('https://cdn.discordapp.com/attachments/1278512248196694077/1280979568764649604/indir.jpg?ex=66da0cb0&is=66d8bb30&hm=a8eb1b0ae26a9d0e42037fb1b2a19e2467405759bcb79e478a9cc89291a0ee17&');
 
-    // Metin mesajını gönder
+    // Embed mesajını göndermek için kanalı kullan
     channel.send({
       content: `Sunucuya Hoşgeldin ${member} <@&1280976845633880094>`,
       embeds: [embed]
