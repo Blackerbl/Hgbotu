@@ -1,1 +1,1 @@
-discord.gg/tokumei
+discord.gg/bushi
