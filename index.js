@@ -29,7 +29,7 @@ app.get('/', (req, res) => {
 // Uptime URL'sine belirli aralıklarla istek gönderme
 function checkUptime() {
   setInterval(() => {
-    axios.get(process.env.LİNK)
+    axios.get(process.env.LINK)
       .then(response => {
         
       })
