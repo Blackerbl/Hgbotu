@@ -58,7 +58,7 @@ client.on('guildMemberAdd', async member => {
   const inviter = usedInvite ? usedInvite.inviter : null;
   const inviteLink = usedInvite ? `https://discord.gg/${usedInvite.code}` : 'Bilinmiyor';
 
-  const channel = member.guild.systemChannel; // Sistem kanalını al
+  const channelId = '1307374268316782715'
   if (channel) {
     // Embed mesajını oluştur
     const embed = new EmbedBuilder()
@@ -66,9 +66,9 @@ client.on('guildMemberAdd', async member => {
       .setDescription(
         `╭ »Bushi 仌 Anime & Manga & Destek\n` +
         `╎ ・<:anime_blanket:1278827611921055826>  ↦ ⁠・﹒ [Kurallar](https://discord.com/channels/1213531797925920768/1280180106832121906) - kuralları okumayı unutma!\n` +
-        `╎ ・ <:focacomfy:1272421146544963646> ↦ ⁠⁠二・🍂﹒ [Selam Chat](https://discord.com/channels/1213531797925920768/1280180147814793276)\n` +
-        `╎ ・<:sei_iciyorum:1272428797395996744>  ↦ ⁠ ⁠ <#1272806997342945284> - Selam Yaz\n` +
-        `╎ ・<:emoji_102:1273396150514221076>  ↦ ⁠・﹒ <@&1280179928058429481> - Partnerlik için geldiysen etiketleyebilirsin..\n` +
+        `╎ ・ <:focacomfy:1272421146544963646> ↦ ⁠⁠二・🍂﹒ [Selam Chat](https://discord.com/channels/1213531797925920768/1307374268316782715)\n` +
+        `╎ ・<:sei_iciyorum:1272428797395996744>  ↦ ⁠ ⁠ <#1307374278437769306> - Kendini Tanıt\n` +
+        `╎ ・<:emoji_102:1273396150514221076>  ↦ ⁠・﹒ <@&1307374072161898596> - Partnerlik için geldiysen etiketleyebilirsin..\n` +
         `╰ » Hadi Sana İyi Sohbetler`
       )
       .setColor(null) // Renk belirtilmemiş
@@ -80,14 +80,14 @@ client.on('guildMemberAdd', async member => {
       ])
       .setAuthor({ name: 'Yeni Üye Düştü' })
       .setFooter({ text: `Sunucu ${member.guild.memberCount} Kişi` })
-      .setImage('https://cdn.discordapp.com/attachments/1278512248196694077/1280979568764649604/indir.jpg?ex=66da0cb0&is=66d8bb30&hm=a8eb1b0ae26a9d0e42037fb1b2a19e2467405759bcb79e478a9cc89291a0ee17&');
+      .setImage('https://cdn.discordapp.com/attachments/1123948349326893076/1308119220835450970/5G8d3z9.gif?ex=673cc875&is=673b76f5&hm=47128b96986e97e89cc4fadfac2dfeea0bccb748d779b33c48a5cb8d3a6d7dd3&');
 
     // Metin mesajını gönder
     channel.send({
-      content: `Sunucuya Hoşgeldin ${member} <@&1280976845633880094>`,
+      content: `Sunucuya Hoşgeldin ${member} <@&1308118499931066439>`,
       embeds: [embed]
     });
   }
 });
 
-client.login(process.env.DISCORD_TOKEN);
+client.login(process.env.TOKEN);
