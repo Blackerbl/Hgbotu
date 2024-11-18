@@ -1,21 +1,50 @@
 require('dotenv').config();
 const { Client, GatewayIntentBits, EmbedBuilder } = require('discord.js');
+const { joinVoiceChannel, VoiceConnectionStatus } = require('@discordjs/voice');
 const express = require('express');
+const axios = require('axios'); // HTTP istekleri için axios
 
 const client = new Client({
   intents: [
     GatewayIntentBits.Guilds,
     GatewayIntentBits.GuildMembers,
     GatewayIntentBits.GuildInvites,
-    GatewayIntentBits.GuildMessages
+    GatewayIntentBits.GuildMessages,
+    GatewayIntentBits.GuildVoiceStates
   ]
 });
 
 // Sadece bu sunucuda çalışmasını istediğiniz sunucu ID'si
 const ALLOWED_GUILD_ID = '1213531797925920768'; // Bu satırı kendi sunucu ID'nizle güncelleyin
+const VOICE_CHANNEL_ID = '1307374402836365342';
 
 // Express uygulaması oluştur
 const app = express();
+
+// Root endpoint
+app.get('/', (req, res) => {
+  res.send('Bot çalışıyor!');
+});
+
+// Uptime URL'sine belirli aralıklarla istek gönderme
+function checkUptime() {
+  setInterval(() => {
+    axios.get(process.env.LİNK)
+      .then(response => {
+        
+      })
+      .catch(error => {
+        console.error('Uptime URL\'sine bağlantı hatası:', error);
+      });
+  }, 30000); // 10 dakika (600000 ms)
+}
+
+client.once('ready', () => {
+  console.log(`Bot giriş yaptı: ${client.user.tag}`);
+
+  // Uptime URL kontrolünü başlat
+  checkUptime();
+});
 
 // Root endpoint
 app.get('/', (req, res) => {
@@ -44,6 +73,55 @@ client.once('ready', async () => {
   }
 });
 
+client.once('ready', () => {
+  console.log(`Bot başarıyla giriş yaptı: ${client.user.tag}`);
+  
+  const guild = client.guilds.cache.get(ALLOWED_GUILD_ID);
+  
+  if (!guild) {
+    console.log('Sunucu bulunamadı!');
+    return;
+  }
+  
+  const voiceChannel = guild.channels.cache.get(VOICE_CHANNEL_ID);
+  
+  if (!voiceChannel) {
+    console.log('Ses kanalı bulunamadı!');
+    return;
+  }
+  
+  console.log(`Kanal adı: ${voiceChannel.name}`);
+  console.log(`Kanal türü: ${voiceChannel.type}`);
+  
+  // Kanal türünü kontrol et
+  if (voiceChannel.type === 2) { // `GUILD_VOICE` = 2
+    joinVoiceChannel({
+      channelId: voiceChannel.id,
+      guildId: voiceChannel.guild.id,
+      adapterCreator: voiceChannel.guild.voiceAdapterCreator,
+    });
+    console.log(`Bot ${voiceChannel.name} kanalına bağlandı ve kalacak.`);
+  } else {
+    console.log('Geçerli bir ses kanalı değil!');
+  }
+});
+
+// Sunucuda ses kanalında kalmayı sağlamak için event listener
+client.on('voiceStateUpdate', (oldState, newState) => {
+  if (newState.channelId === VOICE_CHANNEL_ID) {
+    // Eğer bot ses kanalından ayrılırsa tekrar bağlanması için
+    if (!newState.channel || newState.member.id === client.user.id) {
+      joinVoiceChannel({
+        channelId: VOICE_CHANNEL_ID,
+        guildId: newState.guild.id,
+        adapterCreator: newState.guild.voiceAdapterCreator,
+      });
+    }
+  }
+});
+
+
+
 // Yeni bir üye sunucuya katıldığında
 client.on('guildMemberAdd', async member => {
   if (member.guild.id !== ALLOWED_GUILD_ID) return; // Diğer sunuculardan gelen istekleri yok say
@@ -58,7 +136,9 @@ client.on('guildMemberAdd', async member => {
   const inviter = usedInvite ? usedInvite.inviter : null;
   const inviteLink = usedInvite ? `https://discord.gg/${usedInvite.code}` : 'Bilinmiyor';
 
-  const channelId = '1307374268316782715'
+  // Kanal ID'sini kullanarak kanalı alın
+  const channel = member.guild.channels.cache.get('1307374268316782715');
+
   if (channel) {
     // Embed mesajını oluştur
     const embed = new EmbedBuilder()
@@ -80,13 +160,15 @@ client.on('guildMemberAdd', async member => {
       ])
       .setAuthor({ name: 'Yeni Üye Düştü' })
       .setFooter({ text: `Sunucu ${member.guild.memberCount} Kişi` })
-      .setImage('https://cdn.discordapp.com/attachments/1123948349326893076/1308119220835450970/5G8d3z9.gif?ex=673cc875&is=673b76f5&hm=47128b96986e97e89cc4fadfac2dfeea0bccb748d779b33c48a5cb8d3a6d7dd3&');
+      .setImage('https://cdn.discordapp.com/attachments/1123948349326893076/1308126305526743141/NQ9tE5t.png?ex=673ccf0f&is=673b7d8f&hm=2bd1ffc49368489c236ff832906c917892a0efea0d55a9d89ad4816d26df8950&');
 
     // Metin mesajını gönder
     channel.send({
       content: `Sunucuya Hoşgeldin ${member} <@&1308118499931066439>`,
       embeds: [embed]
     });
+  } else {
+    console.error('Belirtilen kanal bulunamadı!');
   }
 });
 
