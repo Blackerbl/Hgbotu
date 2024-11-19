@@ -39,43 +39,20 @@ function checkUptime() {
   }, 30000); // 10 dakika (600000 ms)
 }
 
+// Bot giriş yaptıktan sonra yapılacak işlemler
 client.once('ready', () => {
   console.log(`Bot giriş yaptı: ${client.user.tag}`);
 
   // Uptime URL kontrolünü başlat
   checkUptime();
-});
 
-// Root endpoint
-app.get('/', (req, res) => {
-  res.send('Bot çalışıyor!');
-});
+  // Express sunucusunu başlat
+  const PORT = process.env.PORT || 3000;
+  app.listen(PORT, () => {
+    console.log(`Sunucu çalışıyor: http://localhost:${PORT}`);
+  });
 
-// Belirtilen port üzerinden sunucuyu başlat
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Sunucu çalışıyor: http://localhost:${PORT}`);
-});
-
-// Önceki davetleri saklamak için bir harita (map) oluşturuyoruz
-const invites = new Map();
-
-client.once('ready', async () => {
-  console.log(`Bot başarıyla giriş yaptı: ${client.user.tag}`);
-
-  // Her sunucudaki davetleri önceden kaydediyoruz
-  const guild = client.guilds.cache.get(ALLOWED_GUILD_ID);
-  if (guild) {
-    const firstInvites = await guild.invites.fetch();
-    invites.set(guild.id, new Map(firstInvites.map(invite => [invite.code, invite.uses])));
-  } else {
-    console.error('Bot belirtilen sunucuda bulunamadı!');
-  }
-});
-
-client.once('ready', () => {
-  console.log(`Bot başarıyla giriş yaptı: ${client.user.tag}`);
-  
+  // Sunucuya bağlanma işlemleri
   const guild = client.guilds.cache.get(ALLOWED_GUILD_ID);
   
   if (!guild) {
@@ -120,27 +97,35 @@ client.on('voiceStateUpdate', (oldState, newState) => {
   }
 });
 
+// Davetleri takip et ve yeni üyeleri karşıla
+const invites = new Map();
+client.once('ready', async () => {
+  console.log(`Bot başarıyla giriş yaptı: ${client.user.tag}`);
 
+  const guild = client.guilds.cache.get(ALLOWED_GUILD_ID);
+  if (guild) {
+    const firstInvites = await guild.invites.fetch();
+    invites.set(guild.id, new Map(firstInvites.map(invite => [invite.code, invite.uses])));
+  } else {
+    console.error('Bot belirtilen sunucuda bulunamadı!');
+  }
+});
 
-// Yeni bir üye sunucuya katıldığında
 client.on('guildMemberAdd', async member => {
-  if (member.guild.id !== ALLOWED_GUILD_ID) return; // Diğer sunuculardan gelen istekleri yok say
+  if (member.guild.id !== ALLOWED_GUILD_ID) return;
 
   const cachedInvites = invites.get(member.guild.id);
   const newInvites = await member.guild.invites.fetch();
 
-  // Davetleri karşılaştırarak hangi davet kodunun kullanıldığını buluyoruz
   const usedInvite = newInvites.find(invite => cachedInvites.get(invite.code) < invite.uses);
   invites.set(member.guild.id, new Map(newInvites.map(invite => [invite.code, invite.uses])));
 
   const inviter = usedInvite ? usedInvite.inviter : null;
   const inviteLink = usedInvite ? `https://discord.gg/${usedInvite.code}` : 'Bilinmiyor';
 
-  // Kanal ID'sini kullanarak kanalı alın
   const channel = member.guild.channels.cache.get('1307374268316782715');
 
   if (channel) {
-    // Embed mesajını oluştur
     const embed = new EmbedBuilder()
       .setTitle(`Sunucuya Hoşgeldin ${member.user.username}`)
       .setDescription(
@@ -151,7 +136,7 @@ client.on('guildMemberAdd', async member => {
         `╎ ・<:emoji_102:1273396150514221076>  ↦ ⁠・﹒ <@&1307374072161898596> - Partnerlik için geldiysen etiketleyebilirsin..\n` +
         `╰ » Hadi Sana İyi Sohbetler`
       )
-      .setColor(null) // Renk belirtilmemiş
+      .setColor(null)
       .addFields([
         {
           name: 'Davet Eden=',
@@ -162,7 +147,6 @@ client.on('guildMemberAdd', async member => {
       .setFooter({ text: `Sunucu ${member.guild.memberCount} Kişi` })
       .setImage('https://cdn.discordapp.com/attachments/1123948349326893076/1308126305526743141/NQ9tE5t.png?ex=673ccf0f&is=673b7d8f&hm=2bd1ffc49368489c236ff832906c917892a0efea0d55a9d89ad4816d26df8950&');
 
-    // Metin mesajını gönder
     channel.send({
       content: `Sunucuya Hoşgeldin ${member} <@&1308118499931066439>`,
       embeds: [embed]
