@@ -123,7 +123,7 @@ client.on('guildMemberAdd', async member => {
   const inviter = usedInvite ? usedInvite.inviter : null;
   const inviteLink = usedInvite ? `https://discord.gg/${usedInvite.code}` : 'Bilinmiyor';
 
-  const channel = member.guild.channels.cache.get('1307374268316782715');
+  const channel = member.guild.channels.cache.get('1318535711477075988');
 
   if (channel) {
     const embed = new EmbedBuilder()
@@ -132,7 +132,7 @@ client.on('guildMemberAdd', async member => {
         `╭ »Bushi 仌 Anime & Manga & Destek\n` +
         `╎ ・<:anime_blanket:1278827611921055826>  ↦ ⁠・﹒ [Kurallar](https://discord.com/channels/1213531797925920768/1280180106832121906) - kuralları okumayı unutma!\n` +
         `╎ ・ <:focacomfy:1272421146544963646> ↦ ⁠⁠二・🍂﹒ [Selam Chat](https://discord.com/channels/1213531797925920768/1307374268316782715)\n` +
-        `╎ ・<:sei_iciyorum:1272428797395996744>  ↦ ⁠ ⁠ <#1307374278437769306> - Kendini Tanıt\n` +
+        `╎ ・<:sei_iciyorum:1272428797395996744>  ↦ ⁠ ⁠ <#1307374249102807050> - Çekiliş Varmı Bah Hele\n` +
         `╎ ・<:emoji_102:1273396150514221076>  ↦ ⁠・﹒ <@&1307374072161898596> - Partnerlik için geldiysen etiketleyebilirsin..\n` +
         `╰ » Hadi Sana İyi Sohbetler`
       )
