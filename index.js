@@ -123,7 +123,7 @@ client.on('guildMemberAdd', async member => {
   const inviter = usedInvite ? usedInvite.inviter : null;
   const inviteLink = usedInvite ? `https://discord.gg/${usedInvite.code}` : 'Bilinmiyor';
 
-  const channel = member.guild.channels.cache.get('1318535711477075988');
+  const channel = member.guild.channels.cache.get('1324341303953330176');
 
   if (channel) {
     const embed = new EmbedBuilder()
