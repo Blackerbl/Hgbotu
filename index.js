@@ -16,7 +16,7 @@ const client = new Client({
 
 // Sadece bu sunucuda çalışmasını istediğiniz sunucu ID'si
 const ALLOWED_GUILD_ID = '1213531797925920768'; // Bu satırı kendi sunucu ID'nizle güncelleyin
-const VOICE_CHANNEL_ID = '1307374402836365342';
+const VOICE_CHANNEL_ID = '1324341431514562600';
 
 // Express uygulaması oluştur
 const app = express();
@@ -130,10 +130,10 @@ client.on('guildMemberAdd', async member => {
       .setTitle(`Sunucuya Hoşgeldin ${member.user.username}`)
       .setDescription(
         `╭ »Bushi 仌 Anime & Manga & Destek\n` +
-        `╎ ・<:anime_blanket:1278827611921055826>  ↦ ⁠・﹒ [Kurallar](https://discord.com/channels/1213531797925920768/1280180106832121906) - kuralları okumayı unutma!\n` +
-        `╎ ・ <:focacomfy:1272421146544963646> ↦ ⁠⁠二・🍂﹒ [Selam Chat](https://discord.com/channels/1213531797925920768/1307374268316782715)\n` +
-        `╎ ・<:sei_iciyorum:1272428797395996744>  ↦ ⁠ ⁠ <#1307374249102807050> - Çekiliş Varmı Bah Hele\n` +
-        `╎ ・<:emoji_102:1273396150514221076>  ↦ ⁠・﹒ <@&1307374072161898596> - Partnerlik için geldiysen etiketleyebilirsin..\n` +
+        `╎ ・<:anime_blanket:1278827611921055826>  ↦ ⁠・﹒ [Kurallar](https://discord.com/channels/1213531797925920768/1324341287394087014) - kuralları okumayı unutma!\n` +
+        `╎ ・ <:focacomfy:1272421146544963646> ↦ ⁠⁠二・🍂﹒ [Selam Chat](https://discord.com/channels/1213531797925920768/1324341303953330176)\n` +
+        `╎ ・<:sei_iciyorum:1272428797395996744>  ↦ ⁠ ⁠ <#1324341292901339146> - Çekiliş Varmı Bah Hele\n` +
+        `╎ ・<:emoji_102:1273396150514221076>  ↦ ⁠・﹒ <@&1324341361159180308> - Partnerlik için rollerini alabilirsin..\n` +
         `╰ » Hadi Sana İyi Sohbetler`
       )
       .setColor(null)
@@ -148,7 +148,7 @@ client.on('guildMemberAdd', async member => {
       .setImage('https://cdn.discordapp.com/attachments/1123948349326893076/1308126305526743141/NQ9tE5t.png?ex=673ccf0f&is=673b7d8f&hm=2bd1ffc49368489c236ff832906c917892a0efea0d55a9d89ad4816d26df8950&');
 
     channel.send({
-      content: `Sunucuya Hoşgeldin ${member} <@&1308118499931066439>`,
+      content: `Sunucuya Hoşgeldin ${member} <@&1304018054295982162>`,
       embeds: [embed]
     });
   } else {
